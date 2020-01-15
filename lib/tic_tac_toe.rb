@@ -69,23 +69,23 @@ class TicTacToe
     puts "Please enter 1-9:"
     input = gets.strip
     index = input_to_index(input)
-    #binding.pry
-    token = current_player
     if valid_move?(index)
+      #binding.pry
+      token = current_player
       move(index, token)
-      display_board
     else
       turn
     end
+    display_board
   end
   
   
   def won?
-    WIN_COMBINATIONS.detect do |win_combo|
+    WIN_COMBINATIONS.any? do |win_combo|
       if (@board[win_combo[0]]) == "X" && (@board[win_combo[1]]) == "X" && (@board[win_combo[2]]) == "X"
-        win_combo
+        return win_combo
       elsif (@board[win_combo[0]]) == "O" && (@board[win_combo[1]]) == "O" && (@board[win_combo[2]]) == "O"
-        win_combo
+       return win_combo
       else false
       end
     end
@@ -93,37 +93,42 @@ class TicTacToe
   
   
    def full?
-      WIN_COMBINATIONS.detect do |win_combo|
-      if (@board[win_combo[0]]) != "X" && (@board[win_combo[1]]) != "X" && (@board[win_combo[2]]) != "X"
-        return false 
-      elsif (@board[win_combo[0]]) != "O" && (@board[win_combo[1]]) != "O" && (@board[win_combo[2]]) != "O"
-        return false
-      else true
-      end
-    end
+    #   WIN_COMBINATIONS.any? do |win_combo|
+    #   if (@board[win_combo[0]]) != "X" && (@board[win_combo[1]]) != "X" && (@board[win_combo[2]]) != "X"
+    #     return false 
+    #   elsif (@board[win_combo[0]]) != "O" && (@board[win_combo[1]]) != "O" && (@board[win_combo[2]]) != "O"
+    #     return false
+    #   else true
+    #   end
+    # end
+    
+    @board.all?{|spot| spot != " "}
    end
    
    
    def draw?
-    !won? && full?
+    full? && !won?
    end
    
    
    def over?
-     draw? || won?
+     won? || draw?
    end 
    
    
    def winner
-     WIN_COMBINATIONS.detect do |win_combo|
-       if (@board[win_combo[0]]) == "X" && (@board[win_combo[1]]) == "X" && (@board[win_combo[2]]) == "X"
-        return "X"
-       elsif (@board[win_combo[0]]) == "O" && (@board[win_combo[1]]) == "O" && (@board[win_combo[2]]) == "O"
-        return "O"
-       else
-        nil
-       end
-     end
+     #WIN_COMBINATIONS.any? do |win_combo|
+    #   if (@board[win_combo[0]]) == "X" && (@board[win_combo[1]]) == "X" && (@board[win_combo[2]]) == "X"
+    #     return "X"
+    #   elsif (@board[win_combo[0]]) == "O" && (@board[win_combo[1]]) == "O" && (@board[win_combo[2]]) == "O"
+    #     return "O"
+    #   else
+    #     nil
+    #   end
+    # end
+    if win_combo = won?
+      @board[win_combo[0]]
+    end
    end
    
    
